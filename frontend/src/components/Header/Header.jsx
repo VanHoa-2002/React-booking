@@ -43,8 +43,6 @@ const Header = () => {
   }, []);
 
   const toggleMenu = () => {
-    console.log(5555);
-
     menuRef.current.classList.toggle("show__menu");
   };
   return (
