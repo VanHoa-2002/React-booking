@@ -83,7 +83,7 @@ const quickLinksThird = [
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <Footer className="pb-16 pt-10">
+    <footer className="pb-16 pt-10">
       <div className="container">
         <div className="flex justify-between flex-col md:flex-row flex-wrap gap-[30px]">
           <div>
@@ -105,9 +105,60 @@ const Footer = () => {
               })}
             </div>
           </div>
+          <div>
+            <h2 className="text-[20px] leading-[30px] font-[700] mb-6 text-headingColor">
+              Quick Links
+            </h2>
+            <ul>
+              {quickLinksFirst.map((link, index) => (
+                <li className="mb-4" key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-[16px] leading-7 font-[400]"
+                  >
+                    {link.display}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-[20px] leading-[30px] font-[700] mb-6 text-headingColor">
+              I want to:
+            </h2>
+            <ul>
+              {quickLinksSecond.map((link, index) => (
+                <li className="mb-4" key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-[16px] leading-7 font-[400]"
+                  >
+                    {link.display}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-[20px] leading-[30px] font-[700] mb-6 text-headingColor">
+              Support
+            </h2>
+            <ul>
+              {quickLinksThird.map((link, index) => (
+                <li className="mb-4" key={index}>
+                  <Link
+                    to={link.path}
+                    className="text-[16px] leading-7 font-[400]"
+                  >
+                    {link.display}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </Footer>
+    </footer>
   );
 };
 
