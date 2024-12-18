@@ -66,6 +66,17 @@ const DoctorAbout = () => {
               New York University of Art & Design
             </p>
           </li>
+          <li className="p-4 rounded bg-[#fff9ea]">
+            <span className="text-yellowColor text-[15px] leading-6 font-semibold">
+              {formatterDate("01-05-2024")} - {formatterDate("05-02-2028")}
+            </span>
+            <p className="text-[15px] leading-6 font-medium text-textColor">
+              PHP in Nel
+            </p>
+            <p className="text-[14px] leading-5 font-medium text-textColor">
+              New York University of Art & Design
+            </p>
+          </li>
         </ul>
       </div>
     </div>
