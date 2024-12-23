@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: "15d",
+    algorithm: "HS256",
   });
 };
 export const register = async (req, res) => {
@@ -13,7 +14,7 @@ export const register = async (req, res) => {
     let user = null;
     if (role === "patient") {
       user = await User.findOne({ email });
-    } else if (role === "admin") {
+    } else if (role === "doctor") {
       user = await Doctor.findOne({ email });
     }
     // check existing user
@@ -31,7 +32,7 @@ export const register = async (req, res) => {
         photo,
       });
     }
-    if (role === "admin") {
+    if (role === "doctor") {
       user = new Doctor({
         name,
         email,
@@ -73,8 +74,15 @@ export const login = async (req, res) => {
         .json({ status: false, message: "Invalid credentials" });
     }
     const token = generateToken(user);
-    const { password: userPassword, ...others } = user._doc;
-    res.status(200).json({ status: true, token, role, data: { ...others } });
+
+    const { password, role, appointments, ...rest } = user._doc;
+    res.status(200).json({
+      status: true,
+      message: "Login successfully",
+      token,
+      role,
+      data: { ...rest },
+    });
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
   }
