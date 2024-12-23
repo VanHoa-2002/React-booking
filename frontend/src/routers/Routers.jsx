@@ -8,6 +8,9 @@ import Signup from "../pages/Signup";
 import Services from "../pages/Services";
 import Contact from "../pages/Contact";
 import Notfound from "../pages/Notfound";
+import MyAccount from "../dashboard/user-account/MyAccount";
+import Dashboard from "../dashboard/doctor-account/Dashboard";
+import ProtectedRouter from "./ProtectedRouter";
 const Routers = () => {
   return (
     <Routes>
@@ -19,6 +22,22 @@ const Routers = () => {
       <Route path="/register" element={<Signup />}></Route>
       <Route path="/services" element={<Services />}></Route>
       <Route path="/contact" element={<Contact />}></Route>
+      <Route
+        path="/users/profile/me"
+        element={
+          <ProtectedRouter allowedRoles={["patient"]}>
+            <MyAccount />{" "}
+          </ProtectedRouter>
+        }
+      ></Route>
+      <Route
+        path="/doctor/profile/me"
+        element={
+          <ProtectedRouter allowedRoles={["doctor"]}>
+            <Dashboard />
+          </ProtectedRouter>
+        }
+      ></Route>
       <Route path="*" element={<Notfound />}></Route>
     </Routes>
   );
