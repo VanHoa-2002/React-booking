@@ -4,7 +4,7 @@ import { authContext } from "../../context/AuthContext";
 import MyBooking from "./MyBooking";
 import Profile from "./Profile";
 import useGetProfile from "../../hooks/useFetchData";
-import { BASE_URL } from "../../config.js";
+import { BASE_URL, defaultImg } from "../../config.js";
 import Loading from "../../components/Loader/Loading.jsx";
 import Error from "../../components/Error/Error.jsx";
 const MyAccount = () => {
@@ -29,7 +29,7 @@ const MyAccount = () => {
               <div className="flex items-center justify-center">
                 <figure className="w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor">
                   <img
-                    src={userData?.photo}
+                    src={userData?.photo ? userData?.photo : defaultImg}
                     alt=""
                     className="w-full h-full rounded-full"
                   />

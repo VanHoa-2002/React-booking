@@ -4,7 +4,6 @@ import HashLoader from "react-spinners/HashLoader";
 import { toast } from "react-toastify";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
 import { BASE_URL, token } from "../../config";
-
 const Profile = ({ userData }) => {
   const [selectFile, setSelectFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -38,8 +37,6 @@ const Profile = ({ userData }) => {
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
     setSelectFile(data.url);
-    console.log(data);
-
     setFormData({ ...formData, photo: data.url });
   };
   const submitHandle = async (e) => {
@@ -50,7 +47,7 @@ const Profile = ({ userData }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token.replace(/['"]+/g, "")}`,
+          Authorization: `Bearer ${token?.replace(/['"]+/g, "")}`,
         },
         body: JSON.stringify(formData),
       });

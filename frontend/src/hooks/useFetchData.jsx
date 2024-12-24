@@ -10,7 +10,7 @@ const useFetchData = (url) => {
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${token.replace(/"/g, "")}` },
+          headers: { Authorization: `Bearer ${token?.replace(/"/g, "")}` },
         });
         const result = await response.json();
         if (!response.ok) {

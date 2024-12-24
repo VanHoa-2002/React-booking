@@ -1,15 +1,45 @@
 import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
+import { useParams } from "react-router-dom";
+import { HashLoader } from "react-spinners";
+import { BASE_URL, token } from "../../config";
+import { toast } from "react-toastify";
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(null);
   const [reviewText, setReviewText] = useState("");
-  const handSubmitReview = async (e) => {
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const handleSubmitReview = async (e) => {
     e.preventDefault();
-    console.log(rating, reviewText);
-    // Here you can send the rating and reviewText to the backend
+    setLoading(true);
+    try {
+      if (!rating || !reviewText) {
+        setLoading(false);
+        toast.error("Please fill all the fields to submit the review");
+      } else {
+        const res = await fetch(`${BASE_URL}/doctors/${id}/reviews`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token?.replace(/"/g, "")}`,
+          },
+          body: JSON.stringify({ rating, reviewText }),
+        });
+        const result = await res.json();
+        if (!result.ok) {
+          throw new Error(result.message);
+        }
+        setLoading(false);
+        toast.success("Review submitted successfully");
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
   };
+
   return (
     <form>
       <div>
@@ -50,11 +80,11 @@ const FeedbackForm = () => {
           className="border border-solid border-[#0066ff34] focus:outline outline-primaryColor w-full px-3 py-3 rounded-md"
           rows={5}
           placeholder="Write your text"
-          onChange={(text) => setReviewText(text)}
+          onChange={(e) => setReviewText(e.target.value)}
         ></textarea>
       </div>
-      <button type="submit" onClick={handSubmitReview} className="btn">
-        Submit Feedback
+      <button type="submit" onClick={handleSubmitReview} className="btn">
+        {loading ? <HashLoader size={25} /> : "Submit Feedback"}
       </button>
     </form>
   );
