@@ -19,16 +19,20 @@ const About = () => {
               Proud to be one of the best medical care in the world
             </h2>
             <p className="text__para">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
-              voluptatibus, excepturi nihil magnam facere fuga. Assumenda
-              pariatur qui necessitatibus aperiam placeat, dignissimos odio!
+              We are a team of medical health professionals who are dedicated to
+              providing the best medical care to our patients. Our team is made
+              up of doctors, nurses, and other healthcare professionals who are
+              committed to providing the best possible care for our patients. We
+              are proud to be one of the best medical care providers in the
+              world, and we are committed to providing the highest quality care
+              to our patients.
             </p>{" "}
             <p className="text__para mt-[30px]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
-              voluptatibus, excepturi nihil magnam facere fuga. Assumenda
-              pariatur qui necessitatibus aperiam placeat, dignissimos odio!
+              Our team is dedicated to providing the best possible care for our
+              patients, and we are committed to providing the highest quality
+              care to our patients. We are proud to be one of the best medical
+              care providers in the world, and we are committed to providing the
+              highest quality care to our patients.
             </p>
             <Link to={"/"}>
               <button className="btn">Learn More</button>

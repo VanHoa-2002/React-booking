@@ -26,14 +26,17 @@ const Home = () => {
             {/* hero content */}
             <div>
               <div className="lg:w-[570px]">
-                <h1 className="text-[36px] leading-[55px] text-headingColor font-[800] md:text-[60px]">
+                <h1 className="text-[36px] leading-[55px] text-headingColor font-[800] md:text-[60px] uppercase">
                   We help patients live a healthy, longer life
                 </h1>
                 <p className="text__para">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi
-                  voluptate ullam incidunt, non numquam fugit vel dicta deleniti
-                  culpa enim dolor excepturi illum quis sapiente adipisci
-                  laboriosam rem vitae aliquid.
+                  Welcome to our booking app, where you can easily schedule
+                  appointments with top doctors at your convenience. Our
+                  platform is designed to provide a seamless experience,
+                  ensuring that you receive the best medical care without any
+                  hassle. Whether you need a consultation, follow-up, or a
+                  specialist visit, our app connects you with qualified
+                  healthcare professionals to meet your needs.
                 </p>
                 <button className="btn">Request an Appointment</button>
               </div>
@@ -96,8 +99,8 @@ const Home = () => {
                   Find a Doctor
                 </h2>
                 <p className="text-[16px] leading-7 text-textColor font-[400] mt-4 text-center">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Quisquam, voluptates.
+                  Our platform allows you to easily search for and find the best
+                  doctors in your area.
                 </p>
                 <Link
                   to="/doctors"
@@ -116,8 +119,8 @@ const Home = () => {
                   Location & Direction
                 </h2>
                 <p className="text-[16px] leading-7 text-textColor font-[400] mt-4 text-center">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Quisquam, voluptates.
+                  Our app provides detailed directions to our clinics, ensuring
+                  you can find us easily.
                 </p>
                 <Link
                   to="/doctors"
@@ -136,8 +139,8 @@ const Home = () => {
                   Booking calendar
                 </h2>
                 <p className="text-[16px] leading-7 text-textColor font-[400] mt-4 text-center">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Quisquam, voluptates.
+                  Our platform allows you to easily booking an appointment and
+                  find the best doctors in your area.
                 </p>
                 <Link
                   to="/doctors"
@@ -156,8 +159,9 @@ const Home = () => {
           <div className="xl:w-[470px] mx-auto">
             <h2 className="heading text-center">Our medical services</h2>
             <p className="text__para text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
+              We have a wide range of medical services to meet your needs. Our
+              team of doctors and specialists are here to help you with any
+              health concerns you may have.
             </p>
           </div>
           <ServicesList />
@@ -222,8 +226,8 @@ const Home = () => {
           <div className="xl:w-[470px] mx-auto">
             <h2 className="heading text-center">Our great doctors</h2>
             <p className="text__para text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
+              Our team of doctors and specialists are here to help you with any
+              health concerns you may have.
             </p>
           </div>
           <DoctorsList />
@@ -249,8 +253,9 @@ const Home = () => {
           <div className="xl:w-[470px] mx-auto">
             <h2 className="heading text-center">What our patient say</h2>
             <p className="text__para text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
+              We are committed to providing the best possible care for our
+              patients. Our team is dedicated to providing the highest quality
+              care to our patients.
             </p>
           </div>
           <Testimonial />
