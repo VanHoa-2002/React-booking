@@ -86,7 +86,11 @@ const Header = () => {
                   }`}
                 >
                   <figure className="w-[35px] h-[35px] rounded-full">
-                    <img src={user?.photo ? user?.photo : defaultImg} alt="" />
+                    <img
+                      src={user?.photo ? user?.photo : defaultImg}
+                      className="aspect-square rounded-full object-cover"
+                      alt=""
+                    />
                   </figure>
                 </Link>
               </div>
