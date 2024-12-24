@@ -3,6 +3,7 @@ import { BiMenu } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { authContext } from "../../context/AuthContext";
+import { defaultImg } from "../../config";
 const navLinks = [
   {
     path: "/home",
@@ -85,7 +86,7 @@ const Header = () => {
                   }`}
                 >
                   <figure className="w-[35px] h-[35px] rounded-full">
-                    <img src={user?.photo} alt="" />
+                    <img src={user?.photo ? user?.photo : defaultImg} alt="" />
                   </figure>
                 </Link>
               </div>
