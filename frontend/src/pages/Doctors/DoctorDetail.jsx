@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import doctoring from "../../assets/images/doctor-img02.png";
 import starIcon from "../../assets/images/Star.png";
@@ -12,12 +12,20 @@ import DoctorAbout from "./DoctorAbout";
 const DoctorDetail = () => {
   const [tab, setTab] = useState("about");
   const { id } = useParams();
+  const [rev, setReviews] = useState(null);
   const {
     data: doctor,
     loading,
     error,
+    refetch,
   } = useFetchData(`${BASE_URL}/doctors/${id}`);
 
+  useEffect(() => {
+    if (rev) {
+      refetch();
+      setReviews(null);
+    }
+  }, [rev, refetch]);
   const {
     name,
     qualifications,
@@ -42,7 +50,7 @@ const DoctorDetail = () => {
           <div className="grid md:grid-cols-3 gap-[50px]">
             <div className="md:col-span-2">
               <div className="flex items-center gap-5">
-                <figure className="max-w-[200px] max-h-[200px]">
+                <figure className="max-w-[200px] max-h-[200px] overflow-hidden">
                   <img src={photo} className="w-full" alt="" />
                 </figure>
                 <div>
@@ -97,7 +105,11 @@ const DoctorDetail = () => {
                   />
                 )}
                 {tab === "feedback" && (
-                  <Feedback totalRating={totalRating} reviews={reviews} />
+                  <Feedback
+                    totalRating={totalRating}
+                    reviews={reviews}
+                    setReviews={setReviews}
+                  />
                 )}
               </div>
             </div>

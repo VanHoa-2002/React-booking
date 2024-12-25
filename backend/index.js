@@ -7,6 +7,7 @@ import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
 import doctorRouter from "./routes/doctor.js";
 import reviewRouter from "./routes/review.js";
+import bookingRouter from "./routes/booking.js";
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/doctors", doctorRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
 app.listen(port, () => {
   connectDB();

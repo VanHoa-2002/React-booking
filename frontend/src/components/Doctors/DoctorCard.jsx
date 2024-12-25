@@ -2,6 +2,7 @@ import React from "react";
 import startIcon from "../../assets/images/Star.png";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
+import { defaultAvatar } from "../../config";
 const DoctorCard = ({ doctor }) => {
   const {
     name,
@@ -15,14 +16,21 @@ const DoctorCard = ({ doctor }) => {
 
   return (
     <div className="p-3 lg:p-5">
-      <div>
-        <img src={photo} className="w-full" alt="" />
+      <div className="max-w-[400px] h-[400px] overflow-hidden rounded-lg shadow-panelShadow">
+        <img
+          src={photo ? photo : defaultAvatar}
+          onError={(e) => {
+            e.target.src = defaultAvatar;
+          }}
+          className="w-full"
+          alt=""
+        />
       </div>
       <h2 className="text-[18px] leading-[30px] lg:text-[26px] lg:leading-9 text-headingColor font-[700] mt-3 lg:mt-5">
         {name}
       </h2>
       <div className="mt-2 lg:mt-4 flex items-center justify-between">
-        <span className="bg-[#ccf0f3] text-irisBlueColor py-1 px-2 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded">
+        <span className="bg-[#ccf0f3] capitalize text-irisBlueColor py-1 px-2 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded">
           {specialization}
         </span>
         <div className="flex items-center gap-[6px] ">
@@ -37,7 +45,7 @@ const DoctorCard = ({ doctor }) => {
       <div className="mt-[18px] lg:mt-5 flex items-center justify-between">
         <div>
           <h3 className="text-[16px] leading-7 lg:text-[18px] lg:leading-[30px] font-semibold text-headingColor">
-            {totalPatients} patients
+            {totalPatients ? totalPatients : 0} patients
           </h3>
           <p className="text-[14px] leading-6 font-[400] text-textColo">
             At {experiences && experiences[0]?.hospital}

@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { formatterDate } from "../../utils/formatterDate";
 import FeedbackForm from "./FeedbackForm";
 import { defaultImg } from "../../config";
-const Feedback = ({ totalRating, reviews }) => {
+import { authContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+const Feedback = ({ totalRating, reviews, setReviews }) => {
   const [showFeedback, setShowFeedback] = useState(false);
-
+  const { token } = useContext(authContext);
+  const handleFeedback = () => {
+    if (!token) {
+      toast.info("Please login to give feedback");
+    } else {
+      setShowFeedback(true);
+    }
+  };
   return (
     <div>
       <div className="mb-[50px]">
@@ -44,12 +53,12 @@ const Feedback = ({ totalRating, reviews }) => {
       </div>
       {!showFeedback && (
         <div className="text-center">
-          <button className="btn" onClick={() => setShowFeedback(true)}>
+          <button className="btn" onClick={handleFeedback}>
             Give Feedback
           </button>
         </div>
       )}
-      {showFeedback && <FeedbackForm />}
+      {showFeedback && <FeedbackForm setUpdate={setReviews} />}
     </div>
   );
 };

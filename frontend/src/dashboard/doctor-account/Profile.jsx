@@ -2,7 +2,7 @@ import cloneDeep from "lodash/cloneDeep";
 import React, { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { BASE_URL, token } from "../../config";
+import { BASE_URL } from "../../config";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
 
 const qualifiItem = {
@@ -90,7 +90,9 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token?.replace(/['"]+/g, "")}`,
+          Authorization: `Bearer ${localStorage
+            .getItem("token")
+            ?.replace(/['"]+/g, "")}`,
         },
         body: JSON.stringify(formData),
       });
@@ -467,7 +469,7 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
         </div>
         <div className="mb-5 flex items-center gap-3">
           {formData.photo && (
-            <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+            <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
               <img
                 src={formData.photo}
                 className="w-full rounded-full"

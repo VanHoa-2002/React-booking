@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
-import { BASE_URL, token } from "../../config";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../config";
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ setUpdate }) => {
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(null);
   const [reviewText, setReviewText] = useState("");
@@ -23,16 +23,21 @@ const FeedbackForm = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token?.replace(/"/g, "")}`,
+            Authorization: `Bearer ${localStorage
+              .getItem("token")
+              ?.replace(/"/g, "")}`,
           },
           body: JSON.stringify({ rating, reviewText }),
         });
         const result = await res.json();
-        if (!result.ok) {
+        if (!result.success) {
           throw new Error(result.message);
         }
         setLoading(false);
         toast.success("Review submitted successfully");
+        console.log("result", result.data);
+
+        setUpdate(result.data);
       }
     } catch (error) {
       setLoading(false);

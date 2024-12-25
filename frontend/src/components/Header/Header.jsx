@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { BiMenu } from "react-icons/bi";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { authContext } from "../../context/AuthContext";
 import { defaultImg } from "../../config";
+import { useState } from "react";
 const navLinks = [
   {
     path: "/home",
@@ -25,8 +26,14 @@ const navLinks = [
 const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
-  const { user, role, token } = useContext(authContext);
-
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const { user, role, token, dispatch } = useContext(authContext);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    setDropdownVisible(false);
+    dispatch({ type: "LOGOUT" });
+    navigate("/login");
+  };
   const handleStickyHeader = () => {
     window.addEventListener("scroll", () => {
       if (
@@ -78,21 +85,69 @@ const Header = () => {
           <div className="flex items-center gap-4">
             {token && user ? (
               <div>
-                <Link
-                  to={`${
-                    role === "doctor"
-                      ? "/doctor/profile/me"
-                      : "/users/profile/me"
-                  }`}
+                <div
+                  // to={`${
+                  //   role === "doctor"
+                  //     ? "/doctor/profile/me"
+                  //     : "/users/profile/me"
+                  // }`}
+                  onMouseEnter={() => setDropdownVisible(true)}
+                  onMouseLeave={() => setDropdownVisible(false)}
+                  className="relative"
                 >
-                  <figure className="w-[35px] h-[35px] rounded-full">
-                    <img
-                      src={user?.photo ? user?.photo : defaultImg}
-                      className="aspect-square rounded-full object-cover"
-                      alt=""
-                    />
-                  </figure>
-                </Link>
+                  <div className="flex items-center gap-2">
+                    <figure className="w-[35px] h-[35px] rounded-full">
+                      <img
+                        src={user?.photo ? user?.photo : defaultImg}
+                        className="aspect-square rounded-full object-cover"
+                        alt=""
+                        onError={(e) => {
+                          console.log(e);
+
+                          e.target.src = defaultImg;
+                        }}
+                      />
+                    </figure>
+                    <h2 className="text-mdd font-medium text-headingColor">
+                      {user.name}
+                    </h2>
+                  </div>
+                  {isDropdownVisible && (
+                    <div
+                      id="dropdownHover"
+                      className="absolute z-10 bg-white divide-y divide-gray-100 rounded-sm shadow w-44 dark:bg-gray-700 top-[85px]"
+                    >
+                      <ul
+                        className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                        aria-labelledby="dropdownHoverButton"
+                      >
+                        <Link
+                          to={`${
+                            role === "doctor"
+                              ? "/doctor/profile/me"
+                              : "/users/profile/me"
+                          }`}
+                        >
+                          <li>
+                            <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                              Profile
+                            </span>
+                          </li>
+                        </Link>
+                        <li className="cursor-pointer">
+                          <a
+                            onClick={() => {
+                              handleLogout();
+                            }}
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Sign out
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <Link to="/login">

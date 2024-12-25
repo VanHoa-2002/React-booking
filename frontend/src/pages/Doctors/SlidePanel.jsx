@@ -1,6 +1,32 @@
 import React from "react";
 import moment from "moment";
+import { BASE_URL } from "../../config";
+import { toast } from "react-toastify";
 const SlidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
+  const bookingHandler = async () => {
+    try {
+      const res = await fetch(
+        `${BASE_URL}/bookings/checkout-session/${doctorId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage
+              .getItem("token")
+              ?.replace(/['"]+/g, "")}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+      if (data.session.url) {
+        window.location.href = data.session.url;
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   const formatTime = (time) => moment(time, "HH:mm").format("hh:mm A");
   return (
     <div className="shadow-panelShadow p-3 lg:p-5 rounded-md">
@@ -27,7 +53,9 @@ const SlidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
           ))}
         </ul>
       </div>
-      <button className="btn px-2 w-full rounded-md">Book Appointment</button>
+      <button onClick={bookingHandler} className="btn px-2 w-full rounded-md">
+        Book Appointment
+      </button>
     </div>
   );
 };
