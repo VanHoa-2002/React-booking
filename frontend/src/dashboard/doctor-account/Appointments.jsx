@@ -63,7 +63,9 @@ const Appointments = ({ appointments }) => {
               )}
             </td>
             <td className="px-6 py-4">{appointment.user.ticketPrice}</td>
-            <td className="px-6 py-4">{formatterDate(appointment.createAt)}</td>
+            <td className="px-6 py-4">
+              {formatterDate(appointment.createdAt)}
+            </td>
           </tr>
         ))}
       </tbody>
