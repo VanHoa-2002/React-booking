@@ -52,7 +52,7 @@ const Dashboard = () => {
                 {tab === "overview" && (
                   <div>
                     <div className="flex items-center gap-4 mb-10">
-                      <figure className="max-w-[200px] max-h-[200px]">
+                      <figure className="max-w-[200px] max-h-[200px] overflow-hidden">
                         <img
                           src={data?.photo ? data?.photo : defaultImg}
                           className="w-full"
@@ -61,7 +61,9 @@ const Dashboard = () => {
                       </figure>
                       <div>
                         <span className="bg-[#ccf0f3] capitalize text-irisBlueColor py-1 px-4 lg:py-2 lg:px-6 rouder text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold">
-                          {data.specialization}
+                          {data.specialization
+                            ? data.specialization
+                            : "No data"}
                         </span>
                         <h3 className="text-[22px] leading-9 font-bold text-headingColor mt-3">
                           {data.name}
@@ -79,7 +81,9 @@ const Dashboard = () => {
                           </span>
                         </div>
                         <p className="text__para font-[15px] lg:max-w-[390px] leading-6">
-                          {data.bio}
+                          {data.bio
+                            ? data.bio
+                            : "No data available, please update your profile!"}
                         </p>
                       </div>
                     </div>

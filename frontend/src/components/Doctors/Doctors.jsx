@@ -4,6 +4,7 @@ import useFetchData from "../../hooks/useFetchData";
 import DoctorCard from "./DoctorCard";
 import Loading from "../Loader/Loading";
 import Error from "../Error/Error";
+import Empty from "../../pages/Empty/Empty";
 const DoctorsList = () => {
   const { data: doctors, loading, error } = useFetchData(`${BASE_URL}/doctors`);
   return (
@@ -15,6 +16,7 @@ const DoctorsList = () => {
           {doctors.map((doctor, index) => (
             <DoctorCard key={index} doctor={doctor} />
           ))}
+          {!doctors.length && <Empty />}
         </div>
       )}
     </>

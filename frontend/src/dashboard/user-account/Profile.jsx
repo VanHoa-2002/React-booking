@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../config";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
-import { BASE_URL, token } from "../../config";
 const Profile = ({ userData }) => {
   const [selectFile, setSelectFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ const Profile = ({ userData }) => {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
-    setSelectFile(data.url);
+    setSelectFile(data);
     setFormData({ ...formData, photo: data.url });
   };
   const submitHandle = async (e) => {
@@ -47,7 +47,9 @@ const Profile = ({ userData }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token?.replace(/['"]+/g, "")}`,
+          Authorization: `Bearer ${localStorage
+            .getItem("token")
+            ?.replace(/['"]+/g, "")}`,
         },
         body: JSON.stringify(formData),
       });
@@ -126,10 +128,10 @@ const Profile = ({ userData }) => {
         </div>
         <div className="mb-5 flex items-center gap-3">
           {formData.photo && (
-            <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+            <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
               <img
                 src={formData.photo || ""}
-                className="w-full rounded-full"
+                className="w-full rounded-full object-cover"
                 alt=""
               />
             </figure>
@@ -147,7 +149,7 @@ const Profile = ({ userData }) => {
               htmlFor="customFile"
               className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer"
             >
-              {selectFile ? selectFile.name : "Upload Photo"}
+              {selectFile ? selectFile.display_name : "Upload Photo"}
             </label>
           </div>
         </div>

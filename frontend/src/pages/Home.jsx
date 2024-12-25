@@ -20,13 +20,13 @@ const Home = () => {
   return (
     <>
       {/* hero section */}
-      <section className="hero__section pt-[60px] 2xl:h-[600px]">
+      <section className="hero__section pt-[60px] 2xl:h-[700px]">
         <div className="container">
           <div className="flex flex-col lg:flex-row gap-[90px] items-center justify-between">
             {/* hero content */}
             <div>
               <div className="lg:w-[570px]">
-                <h1 className="text-[36px] leading-[55px] text-headingColor font-[800] md:text-[60px] uppercase">
+                <h1 className="text-[36px] leading-[55px] text-headingColor font-[800] md:text-[46px] uppercase">
                   We help patients live a healthy, longer life
                 </h1>
                 <p className="text__para">
@@ -38,7 +38,9 @@ const Home = () => {
                   specialist visit, our app connects you with qualified
                   healthcare professionals to meet your needs.
                 </p>
-                <button className="btn">Request an Appointment</button>
+                <Link to={"/doctors"}>
+                  <button className="btn">Request an Appointment</button>
+                </Link>
               </div>
               {/* counter */}
               <div className="mt-[30px] lg:mt-[70px]  flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-[30px]">
@@ -186,7 +188,7 @@ const Home = () => {
                   3. Search for your phisician here , and contact their office
                 </li>
               </ul>
-              <Link to={"/"}>
+              <Link to={"/doctors"}>
                 <button className="btn">Learn More</button>
               </Link>
             </div>

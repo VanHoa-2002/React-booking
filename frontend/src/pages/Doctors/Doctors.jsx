@@ -6,6 +6,7 @@ import useFetchData from "../../hooks/useFetchData";
 import { BASE_URL } from "../../config";
 import Loading from "../../components/Loader/Loading";
 import Error from "../../components/Error/Error";
+import Empty from "../Empty/Empty";
 const Doctors = () => {
   const [query, setQuery] = useState("");
   const [debounce, setDebounce] = useState("");
@@ -51,11 +52,27 @@ const Doctors = () => {
           {loading && <Loading />}
           {error && <Error />}
           {!loading && !error && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-[30px] mt-[30px] lg:mt-[55px]">
-              {doctors.map((doctor, index) => (
-                <DoctorCard key={index} doctor={doctor} />
-              ))}
-            </div>
+            <>
+              {doctors.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-[30px] mt-[30px] lg:mt-[55px]">
+                  {doctors.map((doctor, index) => (
+                    <DoctorCard key={index} doctor={doctor} />
+                  ))}
+                </div>
+              )}
+              {!doctors.length && (
+                <Empty
+                  message={
+                    <>
+                      No result found for{" "}
+                      <span className="text-xl font-bold text-red-500">
+                        {query}
+                      </span>
+                    </>
+                  }
+                />
+              )}
+            </>
           )}
         </div>
       </section>
@@ -64,8 +81,9 @@ const Doctors = () => {
           <div className="xl:w-[470px] mx-auto">
             <h2 className="heading text-center">What our patient say</h2>
             <p className="text__para text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-              perspiciatis maiores nam voluptatum laudantium suscipit cum
+              We are committed to providing the best possible care for our
+              patients. Our team is dedicated to providing the highest quality
+              care to our patients.
             </p>
           </div>
           <Testimonial />

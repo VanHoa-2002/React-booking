@@ -11,6 +11,7 @@ import Notfound from "../pages/Notfound";
 import MyAccount from "../dashboard/user-account/MyAccount";
 import Dashboard from "../dashboard/doctor-account/Dashboard";
 import ProtectedRouter from "./ProtectedRouter";
+import CheckoutSuccess from "../pages/CheckoutSuccess";
 const Routers = () => {
   return (
     <Routes>
@@ -22,6 +23,7 @@ const Routers = () => {
       <Route path="/register" element={<Signup />}></Route>
       <Route path="/services" element={<Services />}></Route>
       <Route path="/contact" element={<Contact />}></Route>
+      <Route path="/checkout-success" element={<CheckoutSuccess />}></Route>
       <Route
         path="/users/profile/me"
         element={

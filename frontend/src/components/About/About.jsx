@@ -26,7 +26,7 @@ const About = () => {
               are proud to be one of the best medical care providers in the
               world, and we are committed to providing the highest quality care
               to our patients.
-            </p>{" "}
+            </p>
             <p className="text__para mt-[30px]">
               Our team is dedicated to providing the best possible care for our
               patients, and we are committed to providing the highest quality
@@ -34,7 +34,7 @@ const About = () => {
               care providers in the world, and we are committed to providing the
               highest quality care to our patients.
             </p>
-            <Link to={"/"}>
+            <Link to={"/doctors"}>
               <button className="btn">Learn More</button>
             </Link>
           </div>

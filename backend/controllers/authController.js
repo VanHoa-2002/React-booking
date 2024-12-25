@@ -1,5 +1,5 @@
 import User from "../models/UserSchema.js";
-import Doctor from "../models/DoctorSchema.js ";
+import Doctor from "../models/DoctorSchema.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 const generateToken = (user) => {
@@ -30,6 +30,7 @@ export const register = async (req, res) => {
         password: hashedPassword,
         role,
         photo,
+        gender,
       });
     }
     if (role === "doctor") {
@@ -39,6 +40,7 @@ export const register = async (req, res) => {
         password: hashedPassword,
         role,
         photo,
+        gender,
       });
     }
     await user.save();
