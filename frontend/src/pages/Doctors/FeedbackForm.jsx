@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
+import { authContext } from "../../context/AuthContext";
 
 const FeedbackForm = ({ setUpdate }) => {
   const [rating, setRating] = useState(null);
@@ -11,6 +12,7 @@ const FeedbackForm = ({ setUpdate }) => {
   const [reviewText, setReviewText] = useState("");
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const { user } = useContext(authContext);
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,7 +29,7 @@ const FeedbackForm = ({ setUpdate }) => {
               .getItem("token")
               ?.replace(/"/g, "")}`,
           },
-          body: JSON.stringify({ rating, reviewText }),
+          body: JSON.stringify({ rating, reviewText, user }),
         });
         const result = await res.json();
         if (!result.success) {

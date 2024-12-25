@@ -1,8 +1,8 @@
-import React from "react";
 import moment from "moment";
-import { BASE_URL } from "../../config";
+import React from "react";
 import { toast } from "react-toastify";
-const SlidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
+import { BASE_URL } from "../../config";
+const SlidePanel = ({ doctorId, ticketPrice, timeSlots, role }) => {
   const bookingHandler = async () => {
     try {
       const res = await fetch(
@@ -53,9 +53,11 @@ const SlidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
           ))}
         </ul>
       </div>
-      <button onClick={bookingHandler} className="btn px-2 w-full rounded-md">
-        Book Appointment
-      </button>
+      {role === "patient" && (
+        <button onClick={bookingHandler} className="btn px-2 w-full rounded-md">
+          Book Appointment
+        </button>
+      )}
     </div>
   );
 };

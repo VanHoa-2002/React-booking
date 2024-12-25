@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { defaultImg } from "../../config";
 import { formatterDate } from "../../utils/formatterDate";
 import FeedbackForm from "./FeedbackForm";
-import { defaultImg } from "../../config";
-import { authContext } from "../../context/AuthContext";
-import { toast } from "react-toastify";
-const Feedback = ({ totalRating, reviews, setReviews }) => {
+const Feedback = ({ totalRating, reviews, setReviews, role, token }) => {
   const [showFeedback, setShowFeedback] = useState(false);
-  const { token } = useContext(authContext);
   const handleFeedback = () => {
     if (!token) {
       toast.info("Please login to give feedback");
@@ -33,7 +31,7 @@ const Feedback = ({ totalRating, reviews, setReviews }) => {
               </figure>
               <div>
                 <h5 className="text-[16px] leading-6 text-primaryColor font-bold">
-                  {review?.name}
+                  {review?.user?.name || "Anonymous"}
                 </h5>
                 <p className="text-[14px] text-textColor leading-6">
                   {formatterDate(review.createdAt)}
@@ -53,9 +51,11 @@ const Feedback = ({ totalRating, reviews, setReviews }) => {
       </div>
       {!showFeedback && (
         <div className="text-center">
-          <button className="btn" onClick={handleFeedback}>
-            Give Feedback
-          </button>
+          {role === "patient" && (
+            <button className="btn" onClick={handleFeedback}>
+              Give Feedback
+            </button>
+          )}
         </div>
       )}
       {showFeedback && <FeedbackForm setUpdate={setReviews} />}

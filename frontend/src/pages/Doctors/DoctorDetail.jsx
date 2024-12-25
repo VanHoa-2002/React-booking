@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import doctoring from "../../assets/images/doctor-img02.png";
 import starIcon from "../../assets/images/Star.png";
-import { BASE_URL } from "../../config";
-import useFetchData from "../../hooks/useFetchData";
-import Feedback from "./Feedback";
-import SlidePanel from "./SlidePanel";
 import Error from "../../components/Error/Error";
 import Loading from "../../components/Loader/Loading";
+import { BASE_URL } from "../../config";
+import { authContext } from "../../context/AuthContext";
+import useFetchData from "../../hooks/useFetchData";
 import DoctorAbout from "./DoctorAbout";
+import Feedback from "./Feedback";
+import SlidePanel from "./SlidePanel";
 const DoctorDetail = () => {
   const [tab, setTab] = useState("about");
   const { id } = useParams();
   const [rev, setReviews] = useState(null);
+  const { role, token } = useContext(authContext);
   const {
     data: doctor,
     loading,
@@ -109,6 +110,8 @@ const DoctorDetail = () => {
                     totalRating={totalRating}
                     reviews={reviews}
                     setReviews={setReviews}
+                    role={role}
+                    token={token}
                   />
                 )}
               </div>
@@ -118,6 +121,7 @@ const DoctorDetail = () => {
                 doctorId={doctor._id}
                 ticketPrice={ticketPrice}
                 timeSlots={timeSlots}
+                role={role}
               />
             </div>
           </div>
