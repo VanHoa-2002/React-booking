@@ -30,6 +30,7 @@ const Profile = ({ userData }) => {
         photo: userData.photo,
         password: userData.password,
         bloodType: userData.bloodType,
+        gender: userData.gender,
       });
     }
   }, [userData]);

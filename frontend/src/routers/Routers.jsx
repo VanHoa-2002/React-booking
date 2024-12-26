@@ -12,6 +12,7 @@ import MyAccount from "../dashboard/user-account/MyAccount";
 import Dashboard from "../dashboard/doctor-account/Dashboard";
 import ProtectedRouter from "./ProtectedRouter";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
+import Mail from "../components/Mail/Mail";
 const Routers = () => {
   return (
     <Routes>
@@ -24,6 +25,7 @@ const Routers = () => {
       <Route path="/services" element={<Services />}></Route>
       <Route path="/contact" element={<Contact />}></Route>
       <Route path="/checkout-success" element={<CheckoutSuccess />}></Route>
+      <Route path="/mail" element={<Mail />}></Route>
       <Route
         path="/users/profile/me"
         element={

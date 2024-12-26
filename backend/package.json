@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "start-dev": "nodemon index.js"
+    "start": "nodemon index.js debug",
+    "start-dev": "nodemon index.js debug"
   },
   "author": "Hoa dev",
   "license": "ISC",

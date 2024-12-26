@@ -1,9 +1,15 @@
 import User from "../models/UserSchema.js";
 import Booking from "../models/BookingSchema.js";
 import Doctor from "../models/DoctorSchema.js";
+import bcrypt from "bcryptjs";
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   try {
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      req.body.password = hashedPassword;
+    }
     const updateUser = await User.findByIdAndUpdate(
       id,
       { $set: req.body },
