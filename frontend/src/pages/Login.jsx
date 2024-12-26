@@ -1,14 +1,15 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../config";
 import { authContext } from "../context/AuthContext";
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "Jason2@example.com",
-    password: "createnew",
+    email: "",
+    password: "",
   });
+  const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { dispatch } = useContext(authContext);
@@ -47,6 +48,34 @@ const Login = () => {
     } catch (error) {
       toast.error(error.message);
       setLoading(false);
+    }
+  };
+  const handleCheckEmail = async (e) => {
+    if (!formData.email) {
+      toast.warning("Please enter your email address");
+      e.preventDefault();
+    } else {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      setOtp(otp.toString().split(""));
+      try {
+        const res = await fetch(`${BASE_URL}/auth/get-otp`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: formData.email, otpGender: otp }),
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          throw new Error(result.message);
+        }
+        toast.success("OTP sent to your email address");
+        navigate("/forgot-password", {
+          state: { email: formData.email, otpGender: otp },
+        });
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
   };
   return (
@@ -92,15 +121,25 @@ const Login = () => {
               )}
             </button>
           </div>
-          <p className="mt-5 text-textColor text-center">
-            Do not have an account?
-            <Link
-              to={"/register"}
-              className="text-primaryColor ml-1 font-medium"
-            >
-              Register
-            </Link>
-          </p>
+          <div className="flex justify-between items-center mt-5">
+            <p className="text-textColor">
+              Do not have an account?
+              <Link
+                to={"/register"}
+                className="text-primaryColor ml-1 font-medium"
+              >
+                Register
+              </Link>
+            </p>
+            <p>
+              <NavLink
+                className="text-primaryColor ml-1 font-medium"
+                onClick={handleCheckEmail}
+              >
+                Forgot Password
+              </NavLink>
+            </p>
+          </div>
         </form>
       </div>
     </section>

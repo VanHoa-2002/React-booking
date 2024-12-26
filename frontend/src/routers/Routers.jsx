@@ -12,6 +12,7 @@ import MyAccount from "../dashboard/user-account/MyAccount";
 import Dashboard from "../dashboard/doctor-account/Dashboard";
 import ProtectedRouter from "./ProtectedRouter";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
+import ForgotPassword from "../pages/ForgotPassword";
 const Routers = () => {
   return (
     <Routes>
@@ -20,6 +21,7 @@ const Routers = () => {
       <Route path="/doctors" element={<Doctors />}></Route>
       <Route path="/doctors/:id" element={<DoctorDetail />}></Route>
       <Route path="/login" element={<Login />}></Route>
+      <Route path="/forgot-password" element={<ForgotPassword />}></Route>
       <Route path="/register" element={<Signup />}></Route>
       <Route path="/services" element={<Services />}></Route>
       <Route path="/contact" element={<Contact />}></Route>
