@@ -23,7 +23,12 @@ export const sendMail = async (req, res) => {
       from: process.env.SMTP_USER,
       to: email,
       subject: process.env.MAIL_GUESS_HEADER,
-      text: process.env.MAIL_GUESS_BODY,
+      html: `
+      <p>Thank you for contact with us</p>
+      <p>We’ve received your request and our team is currently reviewing it. We will contact you shortly with an update.<br /> Please don’t hesitate to let us know if you have any additional questions or information to provide in the meantime.<br /> We appreciate your patience and look forward to assisting you.</p>
+      <p>Best Regards,<br />
+      Medical Booking System</p>
+    `,
     };
     // Convert sendMail to a Promise
     const sendMailAsync = (config) => {

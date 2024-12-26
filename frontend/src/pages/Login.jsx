@@ -9,7 +9,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { dispatch } = useContext(authContext);
@@ -56,7 +55,6 @@ const Login = () => {
       e.preventDefault();
     } else {
       const otp = Math.floor(1000 + Math.random() * 9000);
-      setOtp(otp.toString().split(""));
       try {
         const res = await fetch(`${BASE_URL}/auth/get-otp`, {
           method: "POST",
