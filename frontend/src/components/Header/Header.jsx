@@ -86,11 +86,6 @@ const Header = () => {
             {token && user ? (
               <div>
                 <div
-                  // to={`${
-                  //   role === "doctor"
-                  //     ? "/doctor/profile/me"
-                  //     : "/users/profile/me"
-                  // }`}
                   onMouseEnter={() => setDropdownVisible(true)}
                   onMouseLeave={() => setDropdownVisible(false)}
                   className="relative"
@@ -115,7 +110,7 @@ const Header = () => {
                   {isDropdownVisible && (
                     <div
                       id="dropdownHover"
-                      className="absolute z-10 bg-white divide-y divide-gray-100 rounded-sm shadow w-44 dark:bg-gray-700 top-[85px]"
+                      className="absolute z-10 bg-white divide-y divide-gray-100 rounded-sm shadow w-28 dark:bg-gray-700 top-[85px]"
                     >
                       <ul
                         className="py-1 text-sm text-gray-700 dark:text-gray-200"

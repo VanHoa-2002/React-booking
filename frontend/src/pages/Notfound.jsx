@@ -2,7 +2,6 @@ import React from "react";
 
 const Notfound = () => {
   return (
-    // <div className="flex flex-col justify-center items-center">
     <div className="max-w-[1170px] mx-auto flex items-center justify-center">
       <img
         src="https://cdn3d.iconscout.com/3d/premium/thumb/404-error-page-3d-icon-download-in-png-blend-fbx-gltf-file-formats--not-found-miscellaneous-pack-icons-5701571.png"
@@ -27,7 +26,6 @@ const Notfound = () => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 

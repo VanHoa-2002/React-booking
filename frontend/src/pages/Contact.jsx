@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { BASE_URL } from "../config";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const handleFormChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${BASE_URL}/contact/mail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <section>
       <div className="px-4 mx-auto max-w-screen-md">
@@ -8,7 +32,7 @@ const Contact = () => {
         <p className="mb-8 lg:mb-16 font-light text-center text__para">
           Got a technical issue or have a question? We are here to help you.
         </p>
-        <form action="#" className="space-y-8">
+        <form onSubmit={(event) => handleSubmit(event)} className="space-y-8">
           <div>
             <label htmlFor="" className="form__label">
               Your Email
@@ -18,6 +42,9 @@ const Contact = () => {
               id="email"
               placeholder="Enter your email"
               className="form__input mt-1"
+              value={formData.email || ""}
+              onChange={handleFormChange}
+              name="email"
             />
           </div>
           <div>
@@ -29,6 +56,9 @@ const Contact = () => {
               id="subject"
               placeholder="Let us know how we can help you"
               className="form__input mt-1"
+              value={formData.subject || ""}
+              onChange={handleFormChange}
+              name="subject"
             />
           </div>
           <div className="sm:col-span-2">
@@ -41,6 +71,9 @@ const Contact = () => {
               id="message"
               placeholder="Leave a comment..."
               className="form__input mt-1"
+              value={formData.message || ""}
+              onChange={handleFormChange}
+              name="message"
             />
           </div>
           <button type="submit" className="btn rounded sm:w-fit">
