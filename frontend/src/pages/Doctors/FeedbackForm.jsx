@@ -91,7 +91,7 @@ const FeedbackForm = ({ setUpdate }) => {
         ></textarea>
       </div>
       <button type="submit" onClick={handleSubmitReview} className="btn">
-        {loading ? <HashLoader size={25} /> : "Submit Feedback"}
+        {loading ? <HashLoader color="#fff" size={25} /> : "Submit Feedback"}
       </button>
     </form>
   );

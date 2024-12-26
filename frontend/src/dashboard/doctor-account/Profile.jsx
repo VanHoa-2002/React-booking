@@ -4,6 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
+import { HashLoader } from "react-spinners";
 
 const qualifiItem = {
   startingDate: "",
@@ -23,6 +24,7 @@ const timeSlotItem = {
   endingTime: "",
 };
 const Profile = ({ doctorData, setTab, setUpdate }) => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -79,8 +81,10 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
     handleReusableInputChange(key, index, event);
   };
   const handleFileChange = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
+    setLoading(false);
     setFormData({ ...formData, photo: data?.url });
   };
   const updateProfileHandle = async (e) => {
@@ -470,11 +474,15 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
         <div className="mb-5 flex items-center gap-3">
           {formData.photo && (
             <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
-              <img
-                src={formData.photo}
-                className="w-full rounded-full"
-                alt=""
-              />
+              {loading ? (
+                <HashLoader color="#0066ff" loading={loading} size={20} />
+              ) : (
+                <img
+                  src={formData.photo || ""}
+                  className="w-full rounded-full object-cover"
+                  alt=""
+                />
+              )}
             </figure>
           )}
           <div className="relative w-[130px] h-[50px]">
@@ -486,18 +494,22 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
               accept=".jpg, .png"
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <label
-              htmlFor="customFile"
-              className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer"
-            >
-              Upload Photo
-            </label>
+            <div className="max-w-[150px] h-full flex items-center justify-center">
+              <label
+                title={formData.photo || "Upload Photo"}
+                htmlFor="customFile"
+                className="block w-full items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 bg-[#0066ff46] text-headingColor font-semibold rounded-lg cursor-pointer truncate"
+              >
+                Upload Photo
+              </label>
+            </div>
           </div>
         </div>
         <div className="mt-7">
           <button
+            disabled={loading && true}
+            className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
             type="submit"
-            className="bg-primaryColor text-white text-[18px] leading-[30px] w-full py-3 px-4 rounded-lg"
           >
             Update Profile
           </button>
