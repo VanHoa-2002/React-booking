@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import { toast } from "react-toastify";
@@ -10,6 +10,20 @@ const ForgotPassword = () => {
   const { otpGender, email } = location.state;
   const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
   const inputRefs = useRef([]); // Array of refs for each input field
+  const [time, setTime] = useState(10);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        if (prev > 0) {
+          return prev - 1;
+        } else {
+          clearInterval(interval); // Stop the interval when time reaches zero
+          return prev; // Ensure the time doesn't go below zero
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
   const [formData, setFormData] = useState({
     password: "",
     rePassword: "",
@@ -155,6 +169,25 @@ const ForgotPassword = () => {
       setLoading(false);
     }
   };
+  const handleResend = async () => {
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    try {
+      const res = await fetch(`${BASE_URL}/auth/get-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email, otpGender: otp }),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.message);
+      }
+      toast.success("OTP sent to your email address");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       {page === "E_OTP" && (
@@ -194,11 +227,15 @@ const ForgotPassword = () => {
                 Verify Account
               </button>
               <p className="text-center mt-5">
-                Did not receive code?
-                <a className="text-primaryColor cursor-pointer font-bold">
-                  {" "}
-                  Resend
-                </a>
+                Did not receive code?{" "}
+                <button
+                  type="button"
+                  disabled={time !== 0}
+                  onClick={handleResend}
+                  className={`${time !== 0 ? "cursor-not-allowed" : "cursor-pointer"} text-primaryColor font-bold`}
+                >
+                  Resend (00:{time < 10 ? `0${time}` : time}){" "}
+                </button>
               </p>
             </form>
           </div>

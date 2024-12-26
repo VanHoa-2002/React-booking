@@ -41,9 +41,10 @@ const Contact = () => {
       toast.success(
         "Thank you for contacting us. We will get back to you soon."
       );
-      setFormData({ email: user.email || "", subject: "", message: "" });
+      setFormData({ email: user?.email || "", subject: "", message: "" });
     } catch (error) {
-      console.log(error.message);
+      setLoading(false);
+      toast.error(error.message);
     }
   };
   return (
@@ -97,7 +98,10 @@ const Contact = () => {
               name="message"
             />
           </div>
-          <button type="submit" className="btn rounded sm:w-fit">
+          <button
+            type="submit"
+            className="btn rounded sm:w-fit flex items-center"
+          >
             {loading ? (
               <HashLoader color="#fff" loading={loading} size={20} />
             ) : (
