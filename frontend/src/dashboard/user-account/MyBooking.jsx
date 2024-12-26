@@ -16,8 +16,8 @@ const MyBooking = () => {
       {error && !loading && <Error errMessage={error} />}
       {!loading && !error && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {appointments.map((doctor) => {
-            <DoctorCard doctor={doctor} key={doctor._id} />;
+          {appointments.map((doctor, index) => {
+            return <DoctorCard doctor={doctor} key={index} />;
           })}
         </div>
       )}

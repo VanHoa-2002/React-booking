@@ -25,49 +25,59 @@ const Appointments = ({ appointments }) => {
         </tr>
       </thead>
       <tbody>
-        {appointments.map((appointment) => (
-          <tr key={appointment._id}>
-            <th
-              scope="row"
-              className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
-            >
-              <img
-                src={
-                  appointment.user?.photo ? appointment.user?.photo : defaultImg
-                }
-                className="w-10 h-10 rounded-full"
-                alt=""
-              />
-              <div className="pl-3">
-                <div className="text-base font-semibold">
-                  {appointment.user.name}
+        {appointments.length > 0 &&
+          appointments.map((appointment) => (
+            <tr key={appointment._id}>
+              <th
+                scope="row"
+                className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
+              >
+                <img
+                  src={
+                    appointment?.user?.photo
+                      ? appointment?.user?.photo
+                      : defaultImg
+                  }
+                  className="w-10 h-10 rounded-full"
+                  alt=""
+                />
+                <div className="pl-3">
+                  <div className="text-base font-semibold">
+                    {appointment?.user?.name}
+                  </div>
+                  <div className="text-normal text-gray-500">
+                    {appointment?.user?.email}
+                  </div>
                 </div>
-                <div className="text-normal text-gray-500">
-                  {appointment.user.email}
-                </div>
-              </div>
-            </th>
-            <td className="px-6 py-4">{appointment.user.gender}</td>
-            <td className="px-6 py-4">
-              {appointment.isPaid && (
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-                  Paid
-                </div>
-              )}
-              {!appointment.isPaid && (
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
-                  Unpaid
-                </div>
-              )}
-            </td>
-            <td className="px-6 py-4">{appointment.user.ticketPrice}</td>
-            <td className="px-6 py-4">
-              {formatterDate(appointment.createdAt)}
+              </th>
+              <td className="px-6 py-4">{appointment?.user?.gender}</td>
+              <td className="px-6 py-4">
+                {appointment?.isPaid && (
+                  <div className="flex items-center">
+                    <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
+                    Paid
+                  </div>
+                )}
+                {!appointment?.isPaid && (
+                  <div className="flex items-center">
+                    <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
+                    Unpaid
+                  </div>
+                )}
+              </td>
+              <td className="px-6 py-4">{appointment?.user?.ticketPrice}</td>
+              <td className="px-6 py-4">
+                {formatterDate(appointment?.createdAt)}
+              </td>
+            </tr>
+          ))}
+        {appointments.length === 0 && (
+          <tr>
+            <td colSpan="5" className="text-[14px] text-center py-4">
+              You have no appointments yet.
             </td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );

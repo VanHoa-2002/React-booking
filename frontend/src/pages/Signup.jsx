@@ -6,6 +6,7 @@ import signUpImg from "../assets/images/signup.gif";
 import { BASE_URL } from "../config";
 import uploadImageToCloudinary from "../utils/uploadCloudinary";
 const Signup = () => {
+  const [imageLoading, setImageLoading] = useState(false);
   const [selectFile, setSelectFile] = useState(null);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,10 +26,12 @@ const Signup = () => {
     });
   };
   const handleFileChange = async (e) => {
+    setImageLoading(true);
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
     setPreview(data.url);
     setSelectFile(data.url);
+    setImageLoading(false);
     setFormData({ ...formData, photo: data.url });
   };
   const submitHandle = async (e) => {
@@ -133,7 +136,19 @@ const Signup = () => {
               <div className="mb-5 flex items-center gap-3">
                 {selectFile && (
                   <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
-                    <img src={preview} className="w-full rounded-full" alt="" />
+                    {imageLoading ? (
+                      <HashLoader
+                        color="#0066ff"
+                        loading={imageLoading}
+                        size={20}
+                      />
+                    ) : (
+                      <img
+                        src={preview || ""}
+                        className="w-full rounded-full object-cover"
+                        alt=""
+                      />
+                    )}
                   </figure>
                 )}
                 <div className="relative w-[130px] h-[50px]">

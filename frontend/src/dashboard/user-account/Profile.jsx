@@ -7,6 +7,7 @@ import uploadImageToCloudinary from "../../utils/uploadCloudinary";
 const Profile = ({ userData }) => {
   const [selectFile, setSelectFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,9 +36,14 @@ const Profile = ({ userData }) => {
     }
   }, [userData]);
   const handleFileChange = async (e) => {
+    if (!e.target.files.length) {
+      return;
+    }
+    setImageLoading(true);
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
     setSelectFile(data);
+    setImageLoading(false);
     setFormData({ ...formData, photo: data.url });
   };
   const submitHandle = async (e) => {
@@ -60,6 +66,7 @@ const Profile = ({ userData }) => {
       }
       setLoading(false);
       toast.success(message);
+      navigate(0);
       navigate("/users/profile/me");
     } catch (error) {
       toast.error(error.message);
@@ -130,11 +137,15 @@ const Profile = ({ userData }) => {
         <div className="mb-5 flex items-center gap-3">
           {formData.photo && (
             <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
-              <img
-                src={formData.photo || ""}
-                className="w-full rounded-full object-cover"
-                alt=""
-              />
+              {imageLoading ? (
+                <HashLoader color="#0066ff" loading={imageLoading} size={20} />
+              ) : (
+                <img
+                  src={formData.photo || ""}
+                  className="w-full rounded-full object-cover"
+                  alt=""
+                />
+              )}
             </figure>
           )}
           <div className="relative w-[130px] h-[50px]">
@@ -146,12 +157,17 @@ const Profile = ({ userData }) => {
               accept=".jpg, .png"
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <label
-              htmlFor="customFile"
-              className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer"
-            >
-              {selectFile ? selectFile.display_name : "Upload Photo"}
-            </label>
+            <div className="max-w-[150px] h-full flex items-center justify-center">
+              <label
+                title={selectFile?.display_name || "Upload Photo"}
+                htmlFor="customFile"
+                className="block w-full items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 bg-[#0066ff46] text-headingColor font-semibold rounded-lg cursor-pointer truncate"
+              >
+                {selectFile
+                  ? selectFile?.display_name || formData.photo
+                  : "Upload Photo"}
+              </label>
+            </div>
           </div>
         </div>
         <div className="mt-7">
@@ -163,7 +179,7 @@ const Profile = ({ userData }) => {
             {loading ? (
               <HashLoader color="#fff" loading={loading} size={35} />
             ) : (
-              "Update"
+              "Update Profile"
             )}
           </button>
         </div>
