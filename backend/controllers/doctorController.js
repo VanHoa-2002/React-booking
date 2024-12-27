@@ -1,6 +1,6 @@
 import Doctor from "../models/DoctorSchema.js";
 import Booking from "../models/BookingSchema.js";
-
+import jwt from "jsonwebtoken";
 export const updateDoctor = async (req, res) => {
   const { id } = req.params;
   try {
@@ -9,6 +9,11 @@ export const updateDoctor = async (req, res) => {
       { $set: req.body },
       { new: true }
     );
+    if (!updateDoctor) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Doctor not found" });
+    }
     res.status(200).json({
       success: true,
       message: "Doctor updated successfully",
@@ -25,7 +30,7 @@ export const deleteDoctor = async (req, res) => {
     await Doctor.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
-      message: "Doctor delete successfully",
+      message: "Delete doctor account successfully",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -51,8 +56,12 @@ export const getSingleDoctor = async (req, res) => {
 export const getAllDoctors = async (req, res) => {
   try {
     const { query } = req.query;
+    const token = req.header("authorization");
+    const { role } = jwt.decode(token.split("Bearer ")[1]);
     let doctors;
-    if (query) {
+    if (role === "admin") {
+      doctors = await Doctor.find().select("-password");
+    } else if (query) {
       doctors = await Doctor.find({
         isApproved: "approved",
         $or: [

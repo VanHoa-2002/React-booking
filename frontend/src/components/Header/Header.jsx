@@ -116,6 +116,15 @@ const Header = () => {
                         className="py-1 text-sm text-gray-700 dark:text-gray-200"
                         aria-labelledby="dropdownHoverButton"
                       >
+                        {role === "admin" && (
+                          <Link to={"/admin/management"}>
+                            <li>
+                              <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                Management
+                              </span>
+                            </li>
+                          </Link>
+                        )}
                         <Link
                           to={`${
                             role === "doctor"

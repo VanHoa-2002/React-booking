@@ -29,7 +29,7 @@ const DoctorCard = ({ doctor }) => {
       </h2>
       <div className="mt-2 lg:mt-4 flex items-center justify-between">
         <span className="bg-[#ccf0f3] capitalize text-irisBlueColor py-1 px-2 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded">
-          {specialization}
+          {specialization ? specialization : "No Data"}
         </span>
         <div className="flex items-center gap-[6px] ">
           <span className="flex items-center gap-[6px] text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-semibold text-headingColor">
@@ -46,7 +46,8 @@ const DoctorCard = ({ doctor }) => {
             {totalPatients ? totalPatients : 0} patients
           </h3>
           <p className="text-[14px] leading-6 font-[400] text-textColo">
-            At {experiences && experiences[0]?.hospital}
+            {experiences && experiences[0]?.hospital && "At"}{" "}
+            {experiences && experiences[0]?.hospital}
           </p>
         </div>
         <Link
