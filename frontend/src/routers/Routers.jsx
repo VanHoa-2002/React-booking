@@ -13,6 +13,7 @@ import Dashboard from "../dashboard/doctor-account/Dashboard";
 import ProtectedRouter from "./ProtectedRouter";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import ForgotPassword from "../pages/ForgotPassword";
+import Admin from "../dashboard/admin-account/Admin";
 const Routers = () => {
   return (
     <Routes>
@@ -39,6 +40,14 @@ const Routers = () => {
         element={
           <ProtectedRouter allowedRoles={["doctor"]}>
             <Dashboard />
+          </ProtectedRouter>
+        }
+      ></Route>
+      <Route
+        path="/admin/management"
+        element={
+          <ProtectedRouter allowedRoles={["admin"]}>
+            <Admin />
           </ProtectedRouter>
         }
       ></Route>
