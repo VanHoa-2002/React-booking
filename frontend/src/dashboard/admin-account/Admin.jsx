@@ -260,86 +260,6 @@ const Admin = () => {
             <div className="mt-[50px] overflow-x-auto">
               {tab === "doctor" && (
                 <>
-                  <nav className="mb-2">
-                    <ul className="flex items-center -space-x-px h-8 text-sm">
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (page > 1) setPage(page - 1);
-                          }}
-                          className={`${page === 1 ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                        >
-                          <svg
-                            className="w-2.5 h-2.5 rtl:rotate-180"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 6 10"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 1 1 5l4 4"
-                            />
-                          </svg>
-                        </a>
-                      </li>
-                      {Array.from(
-                        { length: doctorList?.pagination?.pageCount },
-                        (_, index) => index + 1
-                      ).map((item) => {
-                        return (
-                          <li
-                            key={item}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setPage(item);
-                            }}
-                          >
-                            <a
-                              href="#"
-                              className={`${item === page ? "bg-[#ebf5ff] text-primaryColor" : ""} font-medium flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                            >
-                              {item}
-                            </a>
-                          </li>
-                        );
-                      })}
-
-                      <li>
-                        <a
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (page < doctorList?.pagination?.pageCount)
-                              setPage(page + 1);
-                          }}
-                          href="#"
-                          className={`${page >= doctorList.pagination.pageCount ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                        >
-                          <span className="sr-only">Next</span>
-                          <svg
-                            className="w-2.5 h-2.5 rtl:rotate-180"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 6 10"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="m1 9 4-4-4-4"
-                            />
-                          </svg>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
                   <table className="w-full text-left text-sm text-gray-500 table-auto min-h-[400px] border border-solid border-[#f9fafb]">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
@@ -505,20 +425,16 @@ const Admin = () => {
                       )}
                     </tbody>
                   </table>
-                </>
-              )}
-              {tab === "user" && (
-                <>
-                  <nav className="mb-2">
-                    <ul className="flex items-center -space-x-px h-8 text-sm">
+                  <nav className="mt-2 flex">
+                    <ul className="flex items-center -space-x-px h-8 text-sm mx-auto">
                       <li>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            if (userPage > 1) setUserPage(userPage - 1);
+                            if (page > 1) setPage(page - 1);
                           }}
-                          className={`${userPage === 1 ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                          className={`${page === 1 ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
                         >
                           <svg
                             className="w-2.5 h-2.5 rtl:rotate-180"
@@ -538,7 +454,7 @@ const Admin = () => {
                         </a>
                       </li>
                       {Array.from(
-                        { length: userList?.pagination?.pageCount },
+                        { length: doctorList?.pagination?.pageCount },
                         (_, index) => index + 1
                       ).map((item) => {
                         return (
@@ -546,12 +462,12 @@ const Admin = () => {
                             key={item}
                             onClick={(e) => {
                               e.preventDefault();
-                              setUserPage(item);
+                              setPage(item);
                             }}
                           >
                             <a
                               href="#"
-                              className={`${item === userPage ? "bg-[#ebf5ff] text-primaryColor" : ""} font-medium flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                              className={`${item === page ? "bg-[#ebf5ff] text-primaryColor" : ""} font-medium flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
                             >
                               {item}
                             </a>
@@ -563,11 +479,11 @@ const Admin = () => {
                         <a
                           onClick={(e) => {
                             e.preventDefault();
-                            if (userPage < userList?.pagination?.pageCount)
-                              setUserPage(userPage + 1);
+                            if (page < doctorList?.pagination?.pageCount)
+                              setPage(page + 1);
                           }}
                           href="#"
-                          className={`${userPage >= userList?.pagination?.pageCount ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                          className={`${page >= doctorList.pagination.pageCount ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
                         >
                           <span className="sr-only">Next</span>
                           <svg
@@ -589,6 +505,10 @@ const Admin = () => {
                       </li>
                     </ul>
                   </nav>
+                </>
+              )}
+              {tab === "user" && (
+                <>
                   <table className="w-full text-left text-sm text-gray-500 table-auto  border border-solid border-[#f9fafb]">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
@@ -706,6 +626,86 @@ const Admin = () => {
                       )}
                     </tbody>
                   </table>
+                  <nav className="mt-2 flex">
+                    <ul className="flex items-center -space-x-px h-8 text-sm mx-auto">
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (userPage > 1) setUserPage(userPage - 1);
+                          }}
+                          className={`${userPage === 1 ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                        >
+                          <svg
+                            className="w-2.5 h-2.5 rtl:rotate-180"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 6 10"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M5 1 1 5l4 4"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      {Array.from(
+                        { length: userList?.pagination?.pageCount },
+                        (_, index) => index + 1
+                      ).map((item) => {
+                        return (
+                          <li
+                            key={item}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setUserPage(item);
+                            }}
+                          >
+                            <a
+                              href="#"
+                              className={`${item === userPage ? "bg-[#ebf5ff] text-primaryColor" : ""} font-medium flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                            >
+                              {item}
+                            </a>
+                          </li>
+                        );
+                      })}
+
+                      <li>
+                        <a
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (userPage < userList?.pagination?.pageCount)
+                              setUserPage(userPage + 1);
+                          }}
+                          href="#"
+                          className={`${userPage >= userList?.pagination?.pageCount ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                        >
+                          <span className="sr-only">Next</span>
+                          <svg
+                            className="w-2.5 h-2.5 rtl:rotate-180"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 6 10"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="m1 9 4-4-4-4"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
                 </>
               )}
             </div>
