@@ -4,12 +4,14 @@ const useFetchData = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState(null);
 
   // Function to fetch data
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(url, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage
             .getItem("token")
@@ -21,6 +23,7 @@ const useFetchData = (url) => {
         throw new Error(result.message);
       }
       setData(result.data);
+      setPagination(result.pagination);
       setError(null);
     } catch (error) {
       setError(error.message);
@@ -39,6 +42,7 @@ const useFetchData = (url) => {
     data,
     loading,
     error,
+    pagination,
     refetch: fetchData,
   };
 };
