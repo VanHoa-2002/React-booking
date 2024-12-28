@@ -54,11 +54,25 @@ export const getSingleUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select("-password");
+    const perPage = Number.parseInt(req.query.perPage) || 10;
+    const page = Number.parseInt(req.query.page) || 1;
+    const count = await User.countDocuments({ role: "patient" });
+    const pageCount = Math.ceil(count / perPage);
+    const users = await User.find({
+      role: "patient",
+    })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .select("-password");
     res.status(200).json({
       success: true,
       message: "User found successfully",
       data: users,
+      pagination: {
+        perPage,
+        pageCount,
+        page,
+      },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

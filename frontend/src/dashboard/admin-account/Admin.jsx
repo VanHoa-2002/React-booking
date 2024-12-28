@@ -6,20 +6,38 @@ import Error from "../../components/Error/Error";
 import Loading from "../../components/Loader/Loading";
 import { BASE_URL, defaultImg } from "../../config";
 import useFetchData from "../../hooks/useFetchData";
+import { formatterDate } from "../../utils/formatterDate";
 
 const Admin = () => {
-  const [tab, setTab] = useState("doctor");
+  const [tab, setTab] = useState("user");
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-  const [perPage, setPerPage] = useState(2);
+  const [userPage, setUserPage] = useState(1);
+  const [perPage, setPerPage] = useState(5);
   const [doctorList, setDoctorList] = useState([]);
+  const [userList, setUserList] = useState([]);
   let {
     data: userData,
     loading,
     error,
     pagination,
   } = useFetchData(`${BASE_URL}/users`);
-
+  const fetchDataUser = async (page) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/users/?page=${page}&perPage=${perPage}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token").replace(/"/g, "")}`,
+          },
+        }
+      );
+      const result = await response.json();
+      setUserList(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const fetchData = async (page) => {
     try {
       const response = await fetch(
@@ -39,8 +57,16 @@ const Admin = () => {
     }
   };
   useEffect(() => {
-    fetchData(page);
+    if (page) {
+      fetchData(page);
+    }
   }, [page]);
+
+  useEffect(() => {
+    if (userPage) {
+      fetchDataUser(userPage);
+    }
+  }, [userPage]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [action, setAction] = useState("");
   const [id, setId] = useState("");
@@ -86,7 +112,33 @@ const Admin = () => {
       setIsModalOpen(false);
     }
   };
-  const deleteAccount = async () => {};
+  const deleteAccount = async () => {
+    try {
+      console.log("sss");
+
+      const res = await fetch(`${BASE_URL}/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token").replace(/"/g, "")}`,
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+      toast.success(data.message);
+      setIsModalOpen(false);
+      if (data.message) {
+        delay(() => {
+          navigate(0);
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      setIsModalOpen(false);
+    }
+  };
   const deleteDoctor = async () => {
     try {
       const res = await fetch(`${BASE_URL}/doctors/${id}`, {
@@ -307,6 +359,9 @@ const Admin = () => {
                           Rating
                         </th>
                         <th scope="col" className="px-6 py-3">
+                          Create Date
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                           Control
                         </th>
                       </tr>
@@ -363,6 +418,13 @@ const Admin = () => {
                                 <span>Total: {doctor.totalRating}</span>
                                 <span>Average: {doctor.averageRating}</span>
                               </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span>
+                                {doctor.createdAt
+                                  ? formatterDate(doctor.createdAt)
+                                  : "No data"}
+                              </span>
                             </td>
                             <td className="px-6 py-4 flex">
                               <button
@@ -446,15 +508,205 @@ const Admin = () => {
                 </>
               )}
               {tab === "user" && (
-                <h1>aaa</h1>
+                <>
+                  <nav className="mb-2">
+                    <ul className="flex items-center -space-x-px h-8 text-sm">
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (userPage > 1) setUserPage(userPage - 1);
+                          }}
+                          className={`${userPage === 1 ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                        >
+                          <svg
+                            className="w-2.5 h-2.5 rtl:rotate-180"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 6 10"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M5 1 1 5l4 4"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      {Array.from(
+                        { length: userList?.pagination?.pageCount },
+                        (_, index) => index + 1
+                      ).map((item) => {
+                        return (
+                          <li
+                            key={item}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setUserPage(item);
+                            }}
+                          >
+                            <a
+                              href="#"
+                              className={`${item === userPage ? "bg-[#ebf5ff] text-primaryColor" : ""} font-medium flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                            >
+                              {item}
+                            </a>
+                          </li>
+                        );
+                      })}
 
-                //   <Feedback
-                //     totalRating={totalRating}
-                //     reviews={reviews}
-                //     setReviews={setReviews}
-                //     role={role}
-                //     token={token}
-                //   />
+                      <li>
+                        <a
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (userPage < userList?.pagination?.pageCount)
+                              setUserPage(userPage + 1);
+                          }}
+                          href="#"
+                          className={`${userPage >= userList?.pagination?.pageCount ? "cursor-not-allowed" : "cursor-pointer hover:bg-gray-100 hover:text-gray-700"} flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                        >
+                          <span className="sr-only">Next</span>
+                          <svg
+                            className="w-2.5 h-2.5 rtl:rotate-180"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 6 10"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="m1 9 4-4-4-4"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <table className="w-full text-left text-sm text-gray-500 table-auto  border border-solid border-[#f9fafb]">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Gender
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Appointments
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Blood Type
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Created Date
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Control
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userList?.data?.length > 0 &&
+                        userList?.data?.map((user) => (
+                          <tr
+                            key={user._id}
+                            className="border-b border-gray-200 h-5"
+                          >
+                            <th
+                              scope="row"
+                              className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
+                            >
+                              <img
+                                src={user?.photo ? user?.photo : defaultImg}
+                                onError={(e) => {
+                                  e.target.src = defaultImg;
+                                }}
+                                className="w-10 h-10 rounded-full"
+                                alt=""
+                              />
+                              <div className="pl-3">
+                                <div className="text-base font-semibold">
+                                  {user?.name}
+                                </div>
+                                <div className="text-normal text-gray-500">
+                                  {user?.email}
+                                </div>
+                                <span className="text-stone-400 font-normal text-[14px]">
+                                  {user?.specialization}{" "}
+                                  {user?.specialization && user?.phone && "-"}{" "}
+                                  {user?.phone}
+                                </span>
+                              </div>
+                            </th>
+                            <td className="px-6 py-4 capitalize">
+                              {user?.gender}
+                            </td>
+                            <td className="px-6 py-4">
+                              {user?.appointments?.length || 0}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span>{user.bloodType || "No data"}</span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span>
+                                {user.createdAt
+                                  ? formatterDate(user.createdAt)
+                                  : "No data"}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 flex">
+                              <button
+                                type="button"
+                                title="Delete"
+                                className="text-white active:outline-none border-none bg-red-500 hover:bg-red-200 focus:outline-none  font-medium rounded-md text-sm p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                onClick={() => {
+                                  setIsModalOpen(true);
+                                  setAction("delete");
+                                  setId(user._id);
+                                }}
+                              >
+                                <svg
+                                  className="w-6 h-6 text-white dark:text-white"
+                                  aria-hidden="true"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="24"
+                                  height="24"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M6 18 17.94 6M18 18 6.06 6"
+                                  />
+                                </svg>
+                              </button>
+                              {isModalOpen && <Modal action={action} />}
+                            </td>
+                          </tr>
+                        ))}
+                      {userList?.data?.length === 0 && (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="text-[14px] text-center py-4"
+                          >
+                            No data found!
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </>
               )}
             </div>
           </div>

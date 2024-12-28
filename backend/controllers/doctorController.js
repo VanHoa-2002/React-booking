@@ -59,11 +59,11 @@ export const getAllDoctors = async (req, res) => {
     const page = Number.parseInt(req.query.page) || 1;
     const { query } = req.query;
     const count = await Doctor.countDocuments();
-    const pageCount = count / perPage;
+    const pageCount = Math.ceil(count / perPage);
     const token = req.header("authorization");
     const { role } = jwt.decode(token.split("Bearer ")[1]);
     let doctors;
-    if (role === "admin") {
+    if (role === "admin" && !query) {
       doctors = await Doctor.find()
         .skip(perPage * page - perPage)
         .limit(perPage)
