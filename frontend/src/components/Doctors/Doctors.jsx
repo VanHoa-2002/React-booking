@@ -6,7 +6,11 @@ import Loading from "../Loader/Loading";
 import Error from "../Error/Error";
 import Empty from "../../pages/Empty/Empty";
 const DoctorsList = () => {
-  const { data: doctors, loading, error } = useFetchData(`${BASE_URL}/doctors`);
+  const {
+    data: doctors,
+    loading,
+    error,
+  } = useFetchData(`${BASE_URL}/doctors?page=1&perPage=3`);
   return (
     <>
       {loading && <Loading />}

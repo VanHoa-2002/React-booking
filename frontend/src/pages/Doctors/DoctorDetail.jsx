@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import starIcon from "../../assets/images/Star.png";
 import Error from "../../components/Error/Error";
 import Loading from "../../components/Loader/Loading";
-import { BASE_URL } from "../../config";
+import { BASE_URL, defaultAvatar } from "../../config";
 import { authContext } from "../../context/AuthContext";
 import useFetchData from "../../hooks/useFetchData";
 import DoctorAbout from "./DoctorAbout";
@@ -52,11 +52,18 @@ const DoctorDetail = () => {
             <div className="md:col-span-2">
               <div className="flex items-center gap-5">
                 <figure className="max-w-[200px] max-h-[200px] overflow-hidden">
-                  <img src={photo} className="w-full" alt="" />
+                  <img
+                    src={photo || defaultAvatar}
+                    onError={(e) => {
+                      e.target.src = defaultAvatar;
+                    }}
+                    className="w-full"
+                    alt=""
+                  />
                 </figure>
                 <div>
                   <span className="bg-[#ccf0f3] text-irisBlueColor py-1 px-6 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded">
-                    {specialization}
+                    {specialization || "No data"}
                   </span>
                   <h3 className="text-headingColor text-[22px] leading-9 mt-3 font-bold">
                     {name}

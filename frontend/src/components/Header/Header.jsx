@@ -125,19 +125,21 @@ const Header = () => {
                             </li>
                           </Link>
                         )}
-                        <Link
-                          to={`${
-                            role === "doctor"
-                              ? "/doctor/profile/me"
-                              : "/users/profile/me"
-                          }`}
-                        >
-                          <li>
-                            <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                              Profile
-                            </span>
-                          </li>
-                        </Link>
+                        {role !== "admin" && (
+                          <Link
+                            to={`${
+                              role === "doctor"
+                                ? "/doctor/profile/me"
+                                : "/users/profile/me"
+                            }`}
+                          >
+                            <li>
+                              <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                Profile
+                              </span>
+                            </li>
+                          </Link>
+                        )}
                         <li className="cursor-pointer">
                           <a
                             onClick={() => {
