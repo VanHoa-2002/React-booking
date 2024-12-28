@@ -55,12 +55,19 @@ export const getSingleDoctor = async (req, res) => {
 
 export const getAllDoctors = async (req, res) => {
   try {
+    const perPage = Number.parseInt(req.query.perPage) || 10;
+    const page = Number.parseInt(req.query.page) || 1;
     const { query } = req.query;
+    const count = await Doctor.countDocuments();
+    const pageCount = count / perPage;
     const token = req.header("authorization");
     const { role } = jwt.decode(token.split("Bearer ")[1]);
     let doctors;
     if (role === "admin") {
-      doctors = await Doctor.find().select("-password");
+      doctors = await Doctor.find()
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .select("-password");
     } else if (query) {
       doctors = await Doctor.find({
         isApproved: "approved",
@@ -82,6 +89,11 @@ export const getAllDoctors = async (req, res) => {
       success: true,
       message: "Doctor found successfully",
       data: doctors,
+      pagination: {
+        perPage,
+        pageCount,
+        page,
+      },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
