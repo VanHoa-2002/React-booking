@@ -48,7 +48,7 @@ app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/bookings", bookingRouter);
 app.use("/api/v1/contact", mailRouter);
 
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   connectDB();
   console.log(`Server is running on port ${port}`);
 });
