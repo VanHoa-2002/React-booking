@@ -97,6 +97,7 @@ const Footer = () => {
                   <Link
                     to={item.path}
                     key={index}
+                    target="_blank"
                     className="w-9 h-9 border border-solid border-[#181a1e] rounded-full flex items-center justify-center group hover:bg-primaryColor hover:border-none"
                   >
                     {item.icon}
