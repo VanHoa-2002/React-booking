@@ -2,7 +2,9 @@ import React, { useContext } from "react";
 import { BiMenu } from "react-icons/bi";
 import { authContext } from "../../context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Tabs = ({ tab, setTab }) => {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
   const { dispatch } = useContext(authContext);
   const handleLogout = () => {
@@ -11,8 +13,46 @@ const Tabs = ({ tab, setTab }) => {
   };
   return (
     <div>
-      <span className="lg:hidden">
-        <BiMenu className="w-6 h-6 cursor-pointer" />
+      <span
+        className="lg:hidden relative"
+        onMouseEnter={() => setDropdownVisible(true)}
+        onMouseLeave={() => setDropdownVisible(false)}
+      >
+        <BiMenu className=" w-6 h-6 cursor-pointer" />
+        <span className="absolute inset-x-0 t-0 h-[20px] w-[150px] bg-transparent block group-hover:bg-blue-500 transition-all"></span>
+        {dropdownVisible && (
+          <div className="bg-white shadow-lg p-3 border rounded-md mt-3 absolute top-5 left-0">
+            <ul
+              className="py-1 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownHoverButton"
+            >
+              <li className="cursor-pointer">
+                <a
+                  onClick={() => setTab("overview")}
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Overview
+                </a>
+              </li>
+              <li className="cursor-pointer">
+                <a
+                  onClick={() => setTab("appointments")}
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Appointments
+                </a>
+              </li>
+              <li className="cursor-pointer">
+                <a
+                  onClick={() => setTab("settings")}
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Profile
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
       </span>
       <div className="hidden lg:flex flex-col p-[30px] bg-white shadow-panelShadow items-center h-max rounded-md">
         <button

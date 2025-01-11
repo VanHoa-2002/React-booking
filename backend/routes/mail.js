@@ -1,8 +1,9 @@
 import express from "express";
 
-import { sendMail } from "../controllers/mailController.js";
+import { sendMail, sendMailToPatient } from "../controllers/mailController.js";
 const router = express.Router();
 
 router.post("/mail", sendMail);
+router.post("/mail-response", sendMailToPatient);
 
 export default router;
