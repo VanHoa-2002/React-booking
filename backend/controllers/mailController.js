@@ -76,7 +76,6 @@ export const sendMailToPatient = async (req, res) => {
     };
     const info = await sendMailAsync(mailConfigDoctor); // Call the sendMailAsync function
     console.log("Email sent: " + info.response);
-    console.log("Email Guess sent: " + infoGuess.response);
     res.status(200).json({ success: true, message: "Mail sent successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
