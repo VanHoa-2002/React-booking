@@ -114,8 +114,6 @@ const Admin = () => {
   };
   const deleteAccount = async () => {
     try {
-      console.log("sss");
-
       const res = await fetch(`${BASE_URL}/users/${id}`, {
         method: "DELETE",
         headers: {

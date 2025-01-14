@@ -1,22 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { BASE_URL, defaultImg } from "../../config";
 import { formatterDate } from "../../utils/formatterDate";
-import { defaultImg } from "../../config";
+import { HashLoader } from "react-spinners";
 
-const Appointments = ({ appointments }) => {
+const Appointments = ({ appointments, mail }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormDataRes] = useState({
-    subject: "[Response] Medical Booking System",
-    message: "",
-  });
-  const handleInputChange = (e) => {
-    setFormDataRes({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const defaultTitle = "[Response] Medical Booking System";
+  const subjectRef = useRef(null);
+  const messageRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "scroll";
+      };
+    }
+  }, [isModalOpen]);
+  // Handle form submission
+  const submitHandle = async (e, item) => {
+    e.preventDefault();
+    if (!messageRef.current.value || !subjectRef.current.value) {
+      toast.info("Please fill in all fields");
+    } else {
+      setLoading(true);
+      const payload = {
+        subject: subjectRef.current.value,
+        message: messageRef.current.value,
+        email: mail,
+        patientMail: item?.user?.email,
+      };
+      try {
+        const res = await fetch(`${BASE_URL}/contact/mail-response`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token").replace(/"/g, "")}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message);
+        }
+        setLoading(false);
+        toast.success(data.message);
+        setIsModalOpen(false);
+        setSelectedAppointment(null); // Reset selected appointment
+      } catch (error) {
+        setLoading(false);
+        toast.error(error.message);
+        setIsModalOpen(false);
+        setSelectedAppointment(null); // Reset selected appointment
+      }
+    }
   };
-  const submitHandle = (e) => {};
-  const handleAction = () => {};
-  const Modal = ({ item }) => {
+  const Modal = () => {
     return (
       <div>
         <div className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-10">
@@ -50,10 +91,10 @@ const Appointments = ({ appointments }) => {
               <h3 className="text-headingColor border-b mb-2 pb-2">
                 <span className="text-red-500"> To: </span>
                 <span className="border rounded-full px-1">
-                  {item?.user?.email}
+                  {selectedAppointment?.user?.email}
                 </span>
               </h3>
-              <form onSubmit={submitHandle}>
+              <form onSubmit={(e) => submitHandle(e, selectedAppointment)}>
                 <div className="text-headingColor border-b mb-2 pb-2 flex">
                   <span> Subject:</span>
                   <input
@@ -61,8 +102,8 @@ const Appointments = ({ appointments }) => {
                     type="text"
                     placeholder="Subject"
                     name="subject"
-                    value={formData.subject || ""}
-                    onChange={handleInputChange}
+                    defaultValue={defaultTitle}
+                    ref={subjectRef}
                   />
                 </div>
                 <div className="border p-1">
@@ -71,27 +112,29 @@ const Appointments = ({ appointments }) => {
                     rows={5}
                     placeholder="Message"
                     name="message"
-                    value={formData.message || ""}
-                    onChange={handleInputChange}
+                    ref={messageRef}
                   ></textarea>
                 </div>
+                <div className="flex gap-1 items-center justify-end mt-2">
+                  <button
+                    type="submit"
+                    className="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                  >
+                    {loading ? (
+                      <HashLoader color="#fff" loading={loading} size={25} />
+                    ) : (
+                      "Send"
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    type="button"
+                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  >
+                    No, cancel
+                  </button>
+                </div>
               </form>
-              <div className="flex gap-1 items-center justify-end">
-                <button
-                  onClick={() => handleAction()}
-                  type="button"
-                  className="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                >
-                  Send
-                </button>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  type="button"
-                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                >
-                  No, cancel
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -149,7 +192,6 @@ const Appointments = ({ appointments }) => {
                     e.target.src = defaultImg;
                   }}
                   className="w-10 h-10 rounded-full"
-                  alt=""
                 />
                 <div className="pl-3">
                   <div className="text-base font-semibold">
@@ -190,6 +232,7 @@ const Appointments = ({ appointments }) => {
                   } text-white focus:outline-none font-medium rounded-md text-sm p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700`}
                   onClick={() => {
                     setIsModalOpen(true);
+                    setSelectedAppointment(appointment);
                   }}
                 >
                   <svg
@@ -205,7 +248,7 @@ const Appointments = ({ appointments }) => {
                     <path d="M29.456,3.46L1.911,12.642L9,18.155v11.669l5.803-7.156l7.768,6.042L29.456,3.46z M6.089,13.358  l16.607-5.536l-12.443,8.775L6.089,13.358z M11,18.518l10.686-7.543L11,24.175V18.518z M16.055,21.109l9.827-12.144L21.43,25.29  L16.055,21.109z" />
                   </svg>
                 </button>
-                {isModalOpen && <Modal item={appointment} />}
+                {isModalOpen && <Modal />}
               </td>
             </tr>
           ))}

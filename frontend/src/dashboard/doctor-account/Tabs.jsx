@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BiMenu } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 import { authContext } from "../../context/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
 const Tabs = ({ tab, setTab }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
