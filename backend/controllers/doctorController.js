@@ -43,58 +43,59 @@ export const getSingleDoctor = async (req, res) => {
     const doctor = await Doctor.findById(id)
       .populate("reviews")
       .select("-password");
+    const appointments = await Booking.find({ doctor: id });
     res.status(200).json({
       success: true,
       message: "Doctor found successfully",
-      data: doctor,
+      data: { ...doctor._doc, appointments },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 export const getAllDoctors = async (req, res) => {
   try {
     const perPage = Number.parseInt(req.query.perPage) || 10;
     const page = Number.parseInt(req.query.page) || 1;
-    const { query } = req.query;
+    const { query, typeDisease } = req.query; // Lấy typeDisease từ query params
     const count = await Doctor.countDocuments();
     const pageCount = Math.ceil(count / perPage);
-    const token = req.header("authorization").split("Bearer ")[1];
+    const token = req.header("authorization")?.split("Bearer ")[1];
     const { role } =
       token && token !== "null" ? jwt.decode(token) : { role: "notAuthorize" };
+
+    let filter = { isApproved: "approved" };
+
+    if (query) {
+      filter.$or = [
+        { name: { $regex: query, $options: "i" } },
+        { specialization: { $regex: query, $options: "i" } },
+      ];
+    }
+
+    if (typeDisease) {
+      const diseases = typeDisease.split(","); // Cho phép lọc nhiều loại bệnh bằng dấu phẩy
+      filter.typeDisease = { $in: diseases };
+    }
+
     let doctors;
-    if (role === "admin" && !query) {
+    if (role === "admin" && !query && !typeDisease) {
       doctors = await Doctor.find()
-        .skip(perPage * page - perPage)
+        .skip(perPage * (page - 1))
         .limit(perPage)
         .select("-password");
-    } else if (query) {
-      doctors = await Doctor.find({
-        isApproved: "approved",
-        $or: [
-          {
-            name: { $regex: query, $options: "i" }, // i for case insensitive (upper case or lower case)
-          },
-          {
-            specialization: { $regex: query, $options: "i" }, // i for case insensitive (upper case or lower case)
-          },
-        ],
-      }).select("-password");
     } else {
-      doctors = await Doctor.find({ isApproved: "approved" }).select(
-        "-password"
-      );
+      doctors = await Doctor.find(filter)
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .select("-password");
     }
+
     res.status(200).json({
       success: true,
       message: "Doctor found successfully",
       data: doctors,
-      pagination: {
-        perPage,
-        pageCount,
-        page,
-      },
+      pagination: { perPage, pageCount, page },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

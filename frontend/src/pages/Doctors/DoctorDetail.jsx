@@ -41,6 +41,7 @@ const DoctorDetail = () => {
     totalPatients,
     experiences,
     ticketPrice,
+    appointments,
   } = doctor || {};
   return (
     <section>
@@ -129,6 +130,7 @@ const DoctorDetail = () => {
                 ticketPrice={ticketPrice}
                 timeSlots={timeSlots}
                 role={role}
+                appointments={appointments}
               />
             </div>
           </div>
