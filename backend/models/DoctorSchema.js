@@ -41,6 +41,18 @@ const DoctorSchema = new mongoose.Schema(
     },
     appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],
     gender: { type: String, enum: ["male", "female", "other"] },
+    typeDisease: {
+      type: [String],
+      enum: [
+        "INFECTIOUS",
+        "CHRONIC",
+        "GENETIC",
+        "NEUROLOGICAL",
+        "CANCERS",
+        "MENTAL",
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

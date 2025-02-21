@@ -2,9 +2,19 @@ import moment from "moment";
 import React from "react";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
-const SlidePanel = ({ doctorId, ticketPrice, timeSlots, role }) => {
+const SlidePanel = ({
+  doctorId,
+  ticketPrice,
+  timeSlots,
+  role,
+  appointments,
+}) => {
   const bookingHandler = async () => {
     try {
+      if (appointments.length >= timeSlots.length) {
+        toast.warning("No available time slots");
+        return;
+      }
       const res = await fetch(
         `${BASE_URL}/bookings/checkout-session/${doctorId}`,
         {
@@ -38,9 +48,14 @@ const SlidePanel = ({ doctorId, ticketPrice, timeSlots, role }) => {
       </div>
       <div className="mt-[30px]">
         <p className="text__para mt-0 font-semibold text-headingColor">
-          Available time slots:
+          Available time slots:{" "}
+          <span className="text-red-500">
+            {timeSlots.length - appointments.length}
+          </span>
         </p>
-        <ul className="mt-3">
+        <p className="text__para mt-0 font-semibold text-headingColor"></p>
+        Schedule time:{" "}
+        <ul className="mt-1">
           {timeSlots.map((slot, index) => (
             <li key={index} className="flex items-center justify-between mb-2">
               <p className="text-[15px] leading-6 text-textColor font-semibold capitalize">
