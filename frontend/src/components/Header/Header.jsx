@@ -94,7 +94,7 @@ const Header = () => {
                     <figure className="w-[35px] h-[35px] rounded-full">
                       <img
                         src={user?.photo ? user?.photo : defaultImg}
-                        className="aspect-square rounded-full object-cover"
+                        className="aspect-square rounded-full object-cover border-orange-300 border-2 p-1"
                         alt=""
                         onError={(e) => {
                           console.log(e);

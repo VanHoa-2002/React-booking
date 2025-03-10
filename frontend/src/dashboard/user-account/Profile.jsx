@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
+import { authContext } from "../../context/AuthContext";
 const Profile = ({ userData }) => {
   const [selectFile, setSelectFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,8 @@ const Profile = ({ userData }) => {
     setImageLoading(false);
     setFormData({ ...formData, photo: data.url });
   };
+  const { dispatch } = useContext(authContext);
+
   const submitHandle = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -60,10 +63,19 @@ const Profile = ({ userData }) => {
         },
         body: JSON.stringify(formData),
       });
-      const { message } = await res.json();
+      const { message, data } = await res.json();
       if (!res.ok) {
         throw new Error(message);
       }
+      dispatch({
+        type: "UPDATE_PROFILE",
+        payload: {
+          user: data,
+          role: JSON.parse(localStorage.getItem("role")) || null,
+          token: JSON.parse(localStorage.getItem("token")) || null,
+        },
+      });
+
       setLoading(false);
       toast.success(message);
       navigate(0);

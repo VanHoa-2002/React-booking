@@ -1,14 +1,15 @@
 import { createContext, useEffect, useReducer } from "react";
 
-const initialState = {
-  user:
-    localStorage.getItem("user") !== undefined
-      ? JSON.parse(localStorage.getItem("user"))
-      : null,
-  role: JSON.parse(localStorage.getItem("role")) || null,
-  token: JSON.parse(localStorage.getItem("token")) || null,
+const getItem = (key) => {
+  const item = localStorage.getItem(key);
+  return item && item !== "undefined" ? JSON.parse(item) : null;
 };
 
+const initialState = {
+  user: getItem("user"),
+  role: getItem("role"),
+  token: getItem("token"),
+};
 export const authContext = createContext(initialState);
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -29,6 +30,12 @@ const authReducer = (state, action) => {
         user: null,
         role: null,
         token: null,
+      };
+    case "UPDATE_PROFILE":
+      return {
+        user: action.payload.user,
+        role: action.payload.role,
+        token: action.payload.token,
       };
     default:
       return state;
