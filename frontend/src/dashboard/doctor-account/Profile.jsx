@@ -473,7 +473,7 @@ const Profile = ({ doctorData, setTab, setUpdate }) => {
         </div>
         <div className="mb-5 flex items-center gap-3">
           {formData.photo && (
-            <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center">
+            <figure className="w-[60px] h-[60px] rounded-full overflow-hidden border-2 border-solid border-primaryColor flex items-center justify-center object-contain">
               {loading ? (
                 <HashLoader color="#0066ff" loading={loading} size={20} />
               ) : (

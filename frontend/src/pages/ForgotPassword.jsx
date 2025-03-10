@@ -171,6 +171,7 @@ const ForgotPassword = () => {
   };
   const handleResend = async () => {
     const otp = Math.floor(1000 + Math.random() * 9000);
+    location.state.otpGender = otp;
     try {
       const res = await fetch(`${BASE_URL}/auth/get-otp`, {
         method: "POST",
@@ -183,6 +184,7 @@ const ForgotPassword = () => {
       if (!res.ok) {
         throw new Error(result.message);
       }
+      setTime(10);
       toast.success("OTP sent to your email address");
     } catch (error) {
       toast.error(error.message);

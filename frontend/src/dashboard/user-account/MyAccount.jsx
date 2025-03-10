@@ -74,7 +74,7 @@ const MyAccount = () => {
                   <img
                     src={userData?.photo ? userData?.photo : defaultImg}
                     alt=""
-                    className="w-full h-full rounded-full"
+                    className="w-full h-full rounded-full object-contain"
                   />
                 </figure>
               </div>
@@ -88,7 +88,7 @@ const MyAccount = () => {
                 <p className="text-textColor text-[15px] leading-6 font-medium">
                   Blood type:
                   <span className="ml-2 text-[22px] text-headingColor leading-8">
-                    {userData?.bloodType}
+                    {userData?.bloodType ? userData?.bloodType : "-"}
                   </span>
                 </p>
               </div>
